@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI小秘书 - 主页</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            border: 3px solid #1f2937;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .capsule-button {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 65px;
+            height: 30px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .event-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        .event-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        .tab-active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            transform: scale(1.02);
+        }
+        .tab-inactive {
+            background: transparent;
+            color: #6b7280;
+        }
+        .tab-inactive:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }
+        .voice-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .voice-button:hover {
+            animation: none;
+            transform: scale(1.1);
+        }
+        
+        /* AI科技感顶部按钮样式 */
+        .ai-stat-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ai-stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .ai-stat-card:hover::before {
+            left: 100%;
+        }
+        
+        .ai-stat-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+        }
+        
+        .ai-add-button {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 50%, #ff9ff3 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 3s ease infinite;
+            box-shadow: 0 8px 32px rgba(255, 107, 107, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ai-add-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.6s ease;
+        }
+        
+        .ai-add-button:hover::after {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .ai-add-button:hover {
+            transform: translateY(-6px) scale(1.05);
+            animation-duration: 1s;
+            box-shadow: 0 12px 48px rgba(255, 107, 107, 0.6);
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .stat-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            text-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .stat-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            animation: iconFloat 2s ease-in-out infinite;
+        }
+        
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-3px); }
+        }
+        
+        .ai-glow {
+            position: relative;
+        }
+        
+        .ai-glow::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #667eea, #764ba2, #ff6b6b, #667eea);
+            border-radius: inherit;
+            z-index: -1;
+            animation: borderGlow 2s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .ai-glow:hover::before {
+            opacity: 1;
+        }
+        
+        @keyframes borderGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .smart-indicator {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: smartPulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes smartPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.2); }
+        }
+        .time-countdown {
+            background: linear-gradient(90deg, #10b981, #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+        }
+        .overdue {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+        }
+        .nav-icon {
+            transition: all 0.3s ease;
+        }
+        .nav-icon.active {
+            color: #667eea;
+            transform: scale(1.1);
+        }
+        /* 自定义滚动条样式 */
+        .event-list-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        .event-list-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+        }
+        .event-list-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+        }
+        .event-list-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        /* 隐藏滚动条样式 */
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="phone-frame mx-auto mt-8 relative">
+        <!-- 胶囊按钮 -->
+        <div class="capsule-button"></div>
+        
+        <!-- 主要内容区域 -->
+        <div class="h-full gradient-bg p-6 pt-16 pb-16">
+            <!-- 顶部数据统计区域 -->
+            <div class="mb-4">
+                <!-- 数据统计卡片 -->
+                <div class="grid grid-cols-5 gap-3">
+                    <!-- 今日事件统计 -->
+                    <div class="col-span-2">
+                        <div class="ai-stat-card ai-glow rounded-xl p-3 text-center relative">
+                            <div class="smart-indicator"></div>
+                            <div class="stat-icon w-8 h-8 rounded-full flex items-center justify-center mx-auto mb-1">
+                                <i class="fas fa-brain text-white text-sm"></i>
+                            </div>
+                            <p class="stat-number text-xl mb-1">5</p>
+                            <p class="text-white/70 text-xs">今日事件</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 待提醒 -->
+                    <div class="col-span-2">
+                        <div class="ai-stat-card ai-glow rounded-xl p-3 text-center relative">
+                            <div class="smart-indicator"></div>
+                            <div class="stat-icon w-8 h-8 rounded-full flex items-center justify-center mx-auto mb-1">
+                                <i class="fas fa-robot text-white text-sm"></i>
+                            </div>
+                            <p class="stat-number text-xl mb-1">3</p>
+                            <p class="text-white/70 text-xs">待提醒</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 快速添加按钮 -->
+                    <div class="col-span-1">
+                        <button class="ai-add-button w-full h-full rounded-xl flex flex-col items-center justify-center relative z-10 min-h-[80px]">
+                            <div class="relative z-20">
+                                <i class="fas fa-magic text-white text-lg mb-1 block"></i>
+                                <p class="text-white text-xs">创建</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab切换 - 新设计方案 -->
+            <div class="flex justify-center mb-4">
+                <div class="inline-flex items-center space-x-1 bg-white/95 rounded-full p-1 shadow-lg">
+                    <button class="tab-button tab-active px-5 py-1.5 rounded-full text-sm font-medium transition-all duration-300" data-tab="pending">
+                        未完成
+                    </button>
+                    <button class="tab-button tab-inactive px-5 py-1.5 rounded-full text-sm font-medium transition-all duration-300" data-tab="completed">
+                        已完成
+                    </button>
+                    <button class="tab-button tab-inactive px-5 py-1.5 rounded-full text-sm font-medium transition-all duration-300" data-tab="all">
+                        全部
+                    </button>
+                </div>
+            </div>
+
+            <!-- 事件列表 - 调整为5个事件显示 -->
+            <div class="event-list-container space-y-2 overflow-y-auto pr-1 scrollbar-hide" style="height: 550px;">
+                <!-- 未完成事件 -->
+                <div id="pending-events">
+                    <div class="event-card rounded-xl p-3 my-2">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center flex-1">
+                                <div class="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                    <i class="fas fa-users text-blue-600 text-sm"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-gray-800 font-medium text-sm">团队会议</h4>
+                                    <p class="text-xs time-countdown">还有2小时30分</p>
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="w-7 h-7 bg-green-100 rounded-full flex items-center justify-center hover:bg-green-200 transition-colors">
+                                    <i class="fas fa-check text-green-600 text-xs"></i>
+                                </button>
+                                <button class="w-7 h-7 bg-red-100 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors">
+                                    <i class="fas fa-times text-red-600 text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-gray-500">
+                            <span>讨论Q1项目规划</span>
+                            <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded-full">重要</span>
+                        </div>
+                    </div>
+
+                    <div class="event-card rounded-xl p-3 my-2">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center flex-1">
+                                <div class="w-9 h-9 bg-yellow-100 rounded-full flex items-center justify-center mr-3">
+                                    <i class="fas fa-shopping-cart text-yellow-600 text-sm"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-gray-800 font-medium text-sm">超市购物</h4>
+                                    <p class="text-xs time-countdown">还有45分钟</p>
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="w-7 h-7 bg-green-100 rounded-full flex items-center justify-center hover:bg-green-200 transition-colors">
+                                    <i class="fas fa-check text-green-600 text-xs"></i>
+                                </button>
+                                <button class="w-7 h-7 bg-red-100 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors">
+                                    <i class="fas fa-times text-red-600 text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-gray-500">
+                            <span>买菜和日用品</span>
+                            <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded-full">普通</span>
+                        </div>
+                    </div>
+
+                    <div class="event-card rounded-xl p-3 my-2">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center flex-1">
+                                <div class="w-9 h-9 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                                    <i class="fas fa-dumbbell text-red-600 text-sm"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-gray-800 font-medium text-sm">健身房锻炼</h4>
+                                    <p class="text-xs overdue">已超时15分钟</p>
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="w-7 h-7 bg-green-100 rounded-full flex items-center justify-center hover:bg-green-200 transition-colors">
+                                    <i class="fas fa-check text-green-600 text-xs"></i>
+                                </button>
+                                <button class="w-7 h-7 bg-red-100 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors">
+                                    <i class="fas fa-times text-red-600 text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-gray-500">
+                            <span>胸部和三头肌训练</span>
+                            <span class="bg-red-100 text-red-700 px-2 py-1 rounded-full">超时</span>
+                        </div>
+                    </div>
+
+                    <div class="event-card rounded-xl p-3 my-2">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center flex-1">
+                                <div class="w-9 h-9 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                    <i class="fas fa-book text-green-600 text-sm"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-gray-800 font-medium text-sm">阅读时间</h4>
+                                    <p class="text-xs time-countdown">还有3小时15分</p>
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="w-7 h-7 bg-green-100 rounded-full flex items-center justify-center hover:bg-green-200 transition-colors">
+                                    <i class="fas fa-check text-green-600 text-xs"></i>
+                                </button>
+                                <button class="w-7 h-7 bg-red-100 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors">
+                                    <i class="fas fa-times text-red-600 text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-gray-500">
+                            <span>学习前端新技术</span>
+                            <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded-full">普通</span>
+                        </div>
+                    </div>
+
+                    <!-- 第五个事件 -->
+                    <div class="event-card rounded-xl p-3 my-2">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center flex-1">
+                                <div class="w-9 h-9 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                                    <i class="fas fa-coffee text-purple-600 text-sm"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-gray-800 font-medium text-sm">咖啡时间</h4>
+                                    <p class="text-xs time-countdown">还有4小时</p>
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="w-7 h-7 bg-green-100 rounded-full flex items-center justify-center hover:bg-green-200 transition-colors">
+                                    <i class="fas fa-check text-green-600 text-xs"></i>
+                                </button>
+                                <button class="w-7 h-7 bg-red-100 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors">
+                                    <i class="fas fa-times text-red-600 text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-gray-500">
+                            <span>与朋友聊天放松</span>
+                            <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded-full">普通</span>
+                        </div>
+                    </div>
+
+                    <!-- 第六个事件(需要滑动查看) -->
+                    <div class="event-card rounded-xl p-3 my-2">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center flex-1">
+                                <div class="w-9 h-9 bg-indigo-100 rounded-full flex items-center justify-center mr-3">
+                                    <i class="fas fa-plane text-indigo-600 text-sm"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-gray-800 font-medium text-sm">旅行计划</h4>
+                                    <p class="text-xs time-countdown">还有5小时30分</p>
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="w-7 h-7 bg-green-100 rounded-full flex items-center justify-center hover:bg-green-200 transition-colors">
+                                    <i class="fas fa-check text-green-600 text-xs"></i>
+                                </button>
+                                <button class="w-7 h-7 bg-red-100 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors">
+                                    <i class="fas fa-times text-red-600 text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-gray-500">
+                            <span>制定下周旅行攻略</span>
+                            <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full">重要</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 已完成事件 (隐藏) -->
+                <div id="completed-events" class="hidden">
+                    <div class="event-card rounded-xl p-3 opacity-75 my-2">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center flex-1">
+                                <div class="w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center mr-3">
+                                    <i class="fas fa-check text-gray-500 text-sm"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-gray-500 font-medium line-through text-sm">阅读技术文档</h4>
+                                    <p class="text-xs text-gray-400">已完成 2小时前</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-gray-400">
+                            <span>学习新的前端框架</span>
+                            <span class="bg-green-100 text-green-700 px-2 py-1 rounded-full">✓ 完成</span>
+                        </div>
+                    </div>
+
+                    <div class="event-card rounded-xl p-3 opacity-75 my-2">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center flex-1">
+                                <div class="w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center mr-3">
+                                    <i class="fas fa-check text-gray-500 text-sm"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-gray-500 font-medium line-through text-sm">代码Review</h4>
+                                    <p class="text-xs text-gray-400">已完成 昨天</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-gray-400">
+                            <span>审查团队提交的代码</span>
+                            <span class="bg-green-100 text-green-700 px-2 py-1 rounded-full">✓ 完成</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 全部事件 (隐藏) -->
+                <div id="all-events" class="hidden">
+                    <!-- 这里会显示所有事件的混合列表 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部导航栏 - 麦克风嵌入设计 -->
+        <div class="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-white/20">
+            <div class="flex items-center justify-around py-3 px-6">
+                <!-- 事件列表 -->
+                <button class="nav-icon flex flex-col items-center space-y-1 p-2 active">
+                    <i class="fas fa-list text-base"></i>
+                    <span class="text-xs">事件</span>
+                </button>
+                
+                <!-- 中央语音按钮 - 嵌入导航栏 -->
+                <button class="voice-button w-14 h-14 rounded-full flex items-center justify-center relative bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg">
+                    <i class="fas fa-microphone text-white text-xl"></i>
+                    <!-- 内置环形动画效果 -->
+                    <div class="absolute inset-1 rounded-full border-2 border-white/30 animate-pulse"></div>
+                </button>
+                
+                <!-- 我的 -->
+                <button class="nav-icon flex flex-col items-center space-y-1 p-2 text-gray-500">
+                    <i class="fas fa-user text-base"></i>
+                    <span class="text-xs">我的</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab切换功能
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const eventSections = {
+            'pending': document.getElementById('pending-events'),
+            'completed': document.getElementById('completed-events'),
+            'all': document.getElementById('all-events')
+        };
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTab = button.getAttribute('data-tab');
+                
+                // 更新tab按钮状态
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('tab-active');
+                    btn.classList.add('tab-inactive');
+                });
+                button.classList.remove('tab-inactive');
+                button.classList.add('tab-active');
+                
+                // 显示对应的事件列表
+                Object.values(eventSections).forEach(section => {
+                    section.classList.add('hidden');
+                });
+                
+                if (targetTab === 'all') {
+                    // 显示所有事件 (合并未完成和已完成)
+                    eventSections['pending'].classList.remove('hidden');
+                    eventSections['completed'].classList.remove('hidden');
+                } else {
+                    eventSections[targetTab].classList.remove('hidden');
+                }
+            });
+        });
+
+        // 事件完成/删除按钮功能
+        document.querySelectorAll('.event-card').forEach(card => {
+            const completeBtn = card.querySelector('.fa-check').parentElement;
+            const deleteBtn = card.querySelector('.fa-times').parentElement;
+            
+            if (completeBtn) {
+                completeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    // 标记为完成的动画效果
+                    card.style.transform = 'scale(0.95)';
+                    card.style.opacity = '0.5';
+                    setTimeout(() => {
+                        // 这里可以添加移动到已完成列表的逻辑
+                        card.style.transform = '';
+                        card.style.opacity = '';
+                    }, 300);
+                });
+            }
+            
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    // 删除动画效果
+                    card.style.transform = 'translateX(-100%)';
+                    card.style.opacity = '0';
+                    setTimeout(() => {
+                        card.remove();
+                    }, 300);
+                });
+            }
+        });
+
+        // 语音按钮交互
+        const voiceButton = document.querySelector('.voice-button');
+        voiceButton.addEventListener('click', () => {
+            // 添加点击反馈
+            voiceButton.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                voiceButton.style.transform = '';
+            }, 150);
+            
+            // 这里可以添加语音录制逻辑
+            console.log('开始语音输入...');
+        });
+
+        // 底部导航交互
+        document.querySelectorAll('.nav-icon').forEach(icon => {
+            icon.addEventListener('click', () => {
+                document.querySelectorAll('.nav-icon').forEach(i => {
+                    i.classList.remove('active');
+                    i.classList.add('text-gray-500');
+                });
+                icon.classList.add('active');
+                icon.classList.remove('text-gray-500');
+            });
+        });
+    </script>
+</body>
+</html> 
